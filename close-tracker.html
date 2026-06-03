@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>May 2026 Month End Close Tracker</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+  /* ── reset & base ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #ffffff;
+    --bg2: #f5f5f3;
+    --bg3: #eeede9;
+    --text: #1a1a18;
+    --text2: #6b6b67;
+    --border: rgba(0,0,0,0.12);
+    --border2: rgba(0,0,0,0.22);
+    --radius: 8px;
+    --radius-lg: 12px;
+    --green-bg: #E1F5EE;
+    --green-text: #085041;
+    --green-border: #9FE1CB;
+    --amber-bg: #FAEEDA;
+    --amber-text: #633806;
+    --gray-bg: #F1EFE8;
+    --gray-text: #444441;
+    --red-bg: #FCEBEB;
+    --red-text: #A32D2D;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1a;
+      --bg2: #252523;
+      --bg3: #2e2e2b;
+      --text: #f0efe9;
+      --text2: #9b9b95;
+      --border: rgba(255,255,255,0.10);
+      --border2: rgba(255,255,255,0.20);
+      --green-bg: #085041;
+      --green-text: #9FE1CB;
+      --green-border: #0F6E56;
+      --amber-bg: #412402;
+      --amber-text: #FAC775;
+      --gray-bg: #2C2C2A;
+      --gray-text: #B4B2A9;
+      --red-bg: #501313;
+      --red-text: #F09595;
+    }
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg3);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 24px 16px;
+  }
+
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  /* ── header ── */
+  .header { margin-bottom: 20px; }
+  .header h1 { font-size: 22px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+  .header h1 i { color: #1D9E75; font-size: 20px; }
+  .header p { font-size: 13px; color: var(--text2); margin-top: 5px; }
+  .header-row { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .save-badge { font-size: 12px; color: var(--text2); background: var(--bg2); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 4px 10px; display: flex; align-items: center; gap: 5px; }
+
+  /* ── metrics ── */
+  .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 12px; }
+  .metric { background: var(--bg2); border-radius: var(--radius); padding: 14px 16px; }
+  .metric-label { font-size: 12px; color: var(--text2); margin-bottom: 6px; display: flex; align-items: center; gap: 4px; }
+  .metric-value { font-size: 24px; font-weight: 500; }
+  .metric-value.green { color: var(--green-text); }
+  .metric-value.amber { color: var(--amber-text); }
+
+  /* ── progress bar ── */
+  .progress-wrap { height: 6px; background: var(--bg2); border-radius: 3px; margin-bottom: 20px; overflow: hidden; }
+  .progress-fill { height: 100%; background: #1D9E75; border-radius: 3px; transition: width .4s ease; }
+
+  /* ── tabs ── */
+  .tab-bar { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 14px; border-bottom: 0.5px solid var(--border); padding-bottom: 10px; }
+  .tab { font-size: 12px; padding: 4px 12px; border-radius: var(--radius); border: 0.5px solid transparent; cursor: pointer; background: transparent; color: var(--text2); font-family: inherit; }
+  .tab.active { background: var(--bg2); color: var(--text); border-color: var(--border2); font-weight: 500; }
+  .tab:hover:not(.active) { background: var(--bg2); }
+
+  /* ── controls ── */
+  .controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; align-items: center; }
+  .controls select, .controls input[type=text] {
+    font-size: 13px; height: 34px; padding: 0 10px;
+    border-radius: var(--radius); border: 0.5px solid var(--border2);
+    background: var(--bg); color: var(--text); font-family: inherit;
+  }
+  .controls select:focus, .controls input:focus { outline: none; border-color: #1D9E75; box-shadow: 0 0 0 2px rgba(29,158,117,0.15); }
+  .btn { font-size: 13px; height: 34px; padding: 0 14px; border-radius: var(--radius); border: 0.5px solid var(--border2); cursor: pointer; background: var(--bg); color: var(--text); font-family: inherit; display: inline-flex; align-items: center; gap: 5px; }
+  .btn:hover { background: var(--bg2); }
+  .btn.green { background: var(--green-bg); color: var(--green-text); border-color: var(--green-border); }
+  .btn.green:hover { opacity: 0.85; }
+
+  /* ── table ── */
+  .table-wrap { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; }
+  th { text-align: left; padding: 9px 12px; font-weight: 500; font-size: 12px; color: var(--text2); border-bottom: 0.5px solid var(--border); background: var(--bg2); white-space: nowrap; }
+  td { padding: 8px 12px; border-bottom: 0.5px solid var(--border); vertical-align: middle; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--bg2); }
+
+  /* ── badges ── */
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; cursor: pointer; user-select: none; white-space: nowrap; transition: opacity .15s, transform .1s; }
+  .badge:hover { opacity: 0.8; }
+  .badge:active { transform: scale(0.95); }
+  .badge.done { background: var(--green-bg); color: var(--green-text); }
+  .badge.in-progress { background: var(--amber-bg); color: var(--amber-text); }
+  .badge.not-started { background: var(--gray-bg); color: var(--gray-text); }
+
+  /* ── site tag ── */
+  .site-tag { font-size: 11px; color: var(--text2); background: var(--bg2); padding: 2px 7px; border-radius: 4px; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+
+  /* ── delete btn ── */
+  .del-btn { background: none; border: none; cursor: pointer; color: var(--text2); font-size: 15px; padding: 3px 5px; border-radius: var(--radius); opacity: 0; transition: opacity .15s; display: flex; align-items: center; }
+  tr:hover .del-btn { opacity: 1; }
+  .del-btn:hover { color: var(--red-text); background: var(--red-bg); }
+
+  /* ── add form ── */
+  .add-form { background: var(--bg); border: 0.5px solid var(--border2); border-radius: var(--radius-lg); padding: 18px 20px; margin-bottom: 16px; }
+  .add-form h3 { font-size: 14px; font-weight: 500; margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
+  .form-grid { display: grid; gap: 10px; margin-bottom: 10px; }
+  .form-grid.two { grid-template-columns: 1fr 1fr; }
+  .form-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+  @media (max-width: 600px) { .form-grid.two, .form-grid.three { grid-template-columns: 1fr; } }
+  .form-field { display: flex; flex-direction: column; gap: 4px; }
+  .form-field label { font-size: 12px; color: var(--text2); }
+  .form-field input, .form-field select {
+    font-size: 13px; height: 34px; padding: 0 10px;
+    border-radius: var(--radius); border: 0.5px solid var(--border2);
+    background: var(--bg); color: var(--text); font-family: inherit;
+  }
+  .form-field input:focus, .form-field select:focus { outline: none; border-color: #1D9E75; box-shadow: 0 0 0 2px rgba(29,158,117,0.15); }
+  .form-actions { display: flex; gap: 8px; margin-top: 8px; }
+
+  /* ── toast ── */
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(60px); opacity: 0; background: var(--text); color: var(--bg); font-size: 13px; padding: 8px 18px; border-radius: 20px; transition: all .25s ease; pointer-events: none; z-index: 999; white-space: nowrap; }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  /* ── empty state ── */
+  .empty { text-align: center; padding: 36px; color: var(--text2); font-size: 13px; }
+  .empty i { font-size: 28px; display: block; margin-bottom: 8px; }
+
+  /* ── hint text ── */
+  .hint { font-size: 11px; color: var(--text2); margin-top: 2px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header-row">
+    <div class="header">
+      <h1><i class="ti ti-calendar-check"></i> May 2026 Month End Close</h1>
+      <p>Click any status badge to cycle it &nbsp;&bull;&nbsp; Hover a row to delete &nbsp;&bull;&nbsp; Changes save automatically to your browser</p>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <span class="save-badge" id="save-badge"><i class="ti ti-device-floppy"></i> Auto-saved</span>
+      <button class="btn" onclick="clearStorage()" title="Reset all data to defaults"><i class="ti ti-refresh"></i> Reset</button>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <div class="metrics" id="metrics"></div>
+  <div class="progress-wrap"><div class="progress-fill" id="prog-fill"></div></div>
+
+  <div class="tab-bar" id="tab-bar"></div>
+
+  <div class="controls">
+    <select id="f-status"><option value="">All statuses</option><option value="done">Done</option><option value="in progress">In progress</option><option value="not started">Not started</option></select>
+    <select id="f-site"><option value="">All sites</option></select>
+    <select id="f-owner"><option value="">All owners</option></select>
+    <input type="text" id="f-search" placeholder="Search tasks..." style="width:180px">
+    <button class="btn green" onclick="toggleForm()" id="form-toggle-btn"><i class="ti ti-plus"></i> Add task</button>
+  </div>
+
+  <div class="add-form" id="add-form" style="display:none">
+    <h3><i class="ti ti-plus"></i> Add a new task</h3>
+    <div class="form-grid two">
+      <div class="form-field">
+        <label>Task description *</label>
+        <input type="text" id="n-task" placeholder="e.g. Reconcile cash account — x1234">
+      </div>
+      <div class="form-field">
+        <label>Workstream *</label>
+        <select id="n-sheet">
+          <option value="ME Accounting">ME Accounting</option>
+          <option value="IRB Exp Accruals">IRB Exp Accruals</option>
+          <option value="Clinical Exp Accruals">Clinical Exp Accruals</option>
+          <option value="Interco">Interco</option>
+          <option value="Revenue">Revenue</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-grid three">
+      <div class="form-field">
+        <label>Site</label>
+        <input type="text" id="n-site" placeholder="e.g. San Antonio">
+      </div>
+      <div class="form-field">
+        <label>Owner</label>
+        <input type="text" id="n-owner" placeholder="e.g. Yahira">
+      </div>
+      <div class="form-field">
+        <label>Assignee</label>
+        <input type="text" id="n-assignee" placeholder="e.g. Alicia">
+      </div>
+    </div>
+    <div class="form-grid three">
+      <div class="form-field">
+        <label>Status</label>
+        <select id="n-status">
+          <option value="not started">Not started</option>
+          <option value="in progress">In progress</option>
+          <option value="done">Done</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Workday #</label>
+        <input type="text" id="n-workday" placeholder="e.g. 3 or -1">
+        <span class="hint">Negative = before close</span>
+      </div>
+      <div class="form-field">
+        <label>Notes</label>
+        <input type="text" id="n-notes" placeholder="Optional context">
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn green" onclick="addTask()"><i class="ti ti-check"></i> Save task</button>
+      <button class="btn" onclick="toggleForm()">Cancel</button>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <div id="table-wrap-inner"></div>
+  </div>
+
+</div>
+
+<script>
+const STORAGE_KEY = "me-close-tracker-may2026";
+const STATUSES = ["not started","in progress","done"];
+const SHEETS = ["All","ME Accounting","IRB Exp Accruals","Clinical Exp Accruals","Interco","Revenue"];
+
+const DEFAULT_TASKS = [
+  {id:1,site:"ALL",status:"done",task:"Payroll: Accrual - Pay Period 1",owner:"Yahira",assignee:"Alicia",workday:-4,notes:"Insperity - 5/1/2026",sheet:"ME Accounting"},
+  {id:2,site:"ALL",status:"done",task:"Payroll: Accrual - Pay Period 2",owner:"Yahira",assignee:"Alicia",workday:-4,notes:"Insperity - 5/15/2026",sheet:"ME Accounting"},
+  {id:3,site:"ALL",status:"done",task:"Payroll: Accrual - Pay Period 3",owner:"Yahira",assignee:"Alicia",workday:-4,notes:"Insperity - 5/29/2026",sheet:"ME Accounting"},
+  {id:4,site:"1. Prepare",status:"done",task:"Email Josh for Bonus/Commission File",owner:"Yahira",assignee:"Alicia",workday:-3,notes:"",sheet:"ME Accounting"},
+  {id:5,site:"1. Prepare",status:"done",task:"Email Vendors for Professional Fee Accruals",owner:"Yahira",assignee:"Alicia",workday:-3,notes:"",sheet:"ME Accounting"},
+  {id:6,site:"1. Prepare",status:"done",task:"Email Adriana about new Amex cards",owner:"Yahira",assignee:"Alicia/Michael",workday:-3,notes:"",sheet:"ME Accounting"},
+  {id:7,site:"ALL",status:"done",task:"Book Bonus Accruals",owner:"Yahira",assignee:"Alicia",workday:-2,notes:"",sheet:"ME Accounting"},
+  {id:8,site:"ALL",status:"done",task:"Book Commission Accruals",owner:"Yahira",assignee:"Alicia",workday:2,notes:"",sheet:"ME Accounting"},
+  {id:9,site:"ALL",status:"in progress",task:"Book Amex JEs",owner:"Yahira",assignee:"Alicia",workday:-2,notes:"",sheet:"ME Accounting"},
+  {id:10,site:"San Antonio",status:"in progress",task:"Accrue STOH Wages",owner:"Yahira",assignee:"Alicia",workday:-2,notes:"",sheet:"ME Accounting"},
+  {id:11,site:"ALL",status:"done",task:"Pull AMEX Statements",owner:"Yahira",assignee:"Alicia",workday:1,notes:"",sheet:"ME Accounting"},
+  {id:12,site:"ALL",status:"done",task:"Payroll: Accrual - not paid in period",owner:"Yahira",assignee:"Alicia",workday:1,notes:"",sheet:"ME Accounting"},
+  {id:13,site:"ALL",status:"done",task:"Payroll: PTO Accrual",owner:"Yahira",assignee:"Alicia",workday:1,notes:"",sheet:"ME Accounting"},
+  {id:14,site:"Corporate",status:"done",task:"Book Professional Fee Accrual",owner:"Yahira",assignee:"Alicia",workday:1,notes:"",sheet:"ME Accounting"},
+  {id:15,site:"Mountain Region",status:"in progress",task:"Accrue UCS Rent/Wages",owner:"Yahira",assignee:"Alicia",workday:1,notes:"",sheet:"ME Accounting"},
+  {id:16,site:"San Antonio",status:"in progress",task:"Accrue STOH Expenses",owner:"Yahira",assignee:"Alicia",workday:1,notes:"",sheet:"ME Accounting"},
+  {id:17,site:"Xeno",status:"not started",task:"Rev: Book Xeno Efforts Revenue Accrual",owner:"Yahira",assignee:"Michael",workday:1,notes:"",sheet:"ME Accounting"},
+  {id:18,site:"Midwest",status:"done",task:"Accrue CHC Rent/Wages",owner:"Yahira",assignee:"Alicia",workday:2,notes:"In AP accrual",sheet:"ME Accounting"},
+  {id:19,site:"Xeno",status:"done",task:"Rev: Book Xeno Foundation Per Diems Revenue",owner:"Yahira",assignee:"Michael",workday:2,notes:"No issues",sheet:"ME Accounting"},
+  {id:20,site:"Xeno",status:"not started",task:"Rev: Book Xeno Tumor Model Licensing Revenue",owner:"Yahira",assignee:"Michael",workday:2,notes:"",sheet:"ME Accounting"},
+  {id:21,site:"Xeno",status:"done",task:"Rev: Send Eva Xeno Efforts File to Bill",owner:"Yahira",assignee:"Michael",workday:2,notes:"",sheet:"ME Accounting"},
+  {id:22,site:"ASTERA",status:"done",task:"Cash: Download - JPM Ops - x9886",owner:"Yahira",assignee:"Alicia",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:23,site:"ASTERA",status:"done",task:"Cash: Download - JPM Rev - x9852",owner:"Yahira",assignee:"Alicia",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:24,site:"ASTERA",status:"not started",task:"Cash: Download Bank Rec - JPM Ops - x9886",owner:"Yahira",assignee:"Alicia",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:25,site:"ASTERA",status:"not started",task:"Cash: Download Bank Rec - JPM Rev - x9852",owner:"Yahira",assignee:"Alicia",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:26,site:"ASTERA",status:"not started",task:"Cash: Reconcile - JPM Ops - x9886",owner:"Yahira",assignee:"Alicia",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:27,site:"ASTERA",status:"not started",task:"Cash: Reconcile - JPM Rev - x9852",owner:"Yahira",assignee:"Alicia",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:28,site:"CCBD",status:"done",task:"Cash: Download - JPM Ops - x2589 (Dallas)",owner:"Yahira",assignee:"Alicia",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:29,site:"CCBD",status:"done",task:"Cash: Download - JPM Rev - x3709 (Dallas)",owner:"Yahira",assignee:"Alicia",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:30,site:"CCBD",status:"not started",task:"Cash: Download Bank Rec - JPM Ops - x2589",owner:"Yahira",assignee:"Alicia",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:31,site:"CCBD",status:"not started",task:"Cash: Download Bank Rec - JPM Rev - x3709",owner:"Yahira",assignee:"Alicia",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:32,site:"CCBD",status:"not started",task:"Cash: Reconcile - JPM Ops - x2589",owner:"Yahira",assignee:"Alicia",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:33,site:"CCBD",status:"not started",task:"Cash: Reconcile - JPM Rev - x3709",owner:"Yahira",assignee:"Alicia",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:34,site:"CURC",status:"done",task:"Cash: Download - First Citizen Ops - x5601",owner:"Yahira",assignee:"Alicia",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:35,site:"CURC",status:"done",task:"Cash: Download - JPM Ops - x1326",owner:"Yahira",assignee:"Alicia",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:36,site:"CURC",status:"done",task:"Cash: Download - JPM Rev - x1717",owner:"Yahira",assignee:"Alicia",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:37,site:"CURC",status:"not started",task:"Cash: Download Bank Rec - First Citizen x5601",owner:"Yahira",assignee:"Alicia",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:38,site:"CURC",status:"not started",task:"Cash: Download Bank Rec - JPM Ops - x1326",owner:"Yahira",assignee:"Alicia",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:39,site:"CURC",status:"not started",task:"Cash: Download Bank Rec - JPM Rev - x1717",owner:"Yahira",assignee:"Alicia",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:40,site:"CURC",status:"not started",task:"Cash: Reconcile - First Citizen - x5601",owner:"Yahira",assignee:"Alicia",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:41,site:"CURC",status:"not started",task:"Cash: Reconcile - JPM Ops - x1326",owner:"Yahira",assignee:"Alicia",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:42,site:"CURC",status:"not started",task:"Cash: Reconcile - JPM Rev - x1717",owner:"Yahira",assignee:"Alicia",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:43,site:"DUBLIN",status:"done",task:"Cash: Download - JPM Ops - x1300",owner:"Yahira",assignee:"Michael",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:44,site:"DUBLIN",status:"done",task:"Cash: Download - JPM Rev - x0353",owner:"Yahira",assignee:"Michael",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:45,site:"DUBLIN",status:"not started",task:"Cash: Download Bank Rec - JPM Ops - x1300",owner:"Yahira",assignee:"Michael",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:46,site:"DUBLIN",status:"not started",task:"Cash: Download Bank Rec - JPM Rev - x0353",owner:"Yahira",assignee:"Michael",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:47,site:"DUBLIN",status:"not started",task:"Cash: Reconcile - JPM Ops - x1300",owner:"Yahira",assignee:"Michael",workday:3,notes:"",sheet:"ME Accounting"},
+  {id:48,site:"DUBLIN",status:"not started",task:"Cash: Reconcile - JPM Rev - x0353",owner:"Yahira",assignee:"Michael",workday:3,notes:"",sheet:"ME Accounting"},
+  ...[...["San Antonio","Mountain Region","Midwest","LACN","Dallas","Northwell","Astera","CURC"]].flatMap((s,si)=>[
+    {id:100+(si*7),site:s,status:"not started",task:s+" - Get the IRB revenue workbook",owner:"Yahira",assignee:"Dylan",workday:6,notes:"",sheet:"IRB Exp Accruals"},
+    {id:100+(si*7)+1,site:s,status:"not started",task:s+" - Pull IRB report (open/pending/paid invoices)",owner:"Yahira",assignee:"Dylan",workday:6,notes:"",sheet:"IRB Exp Accruals"},
+    {id:100+(si*7)+2,site:s,status:"not started",task:s+" - Identify subsidiary for corporate invoices",owner:"Yahira",assignee:"Dylan",workday:6,notes:"",sheet:"IRB Exp Accruals"},
+    {id:100+(si*7)+3,site:s,status:"not started",task:s+" - Pull Pending Invoices Report",owner:"Yahira",assignee:"Dylan",workday:6,notes:"",sheet:"IRB Exp Accruals"},
+    {id:100+(si*7)+4,site:s,status:"not started",task:s+" - Calculate the JE",owner:"Yahira",assignee:"Dylan",workday:6,notes:"",sheet:"IRB Exp Accruals"},
+    {id:100+(si*7)+5,site:s,status:"not started",task:s+" - Book IRB accruals in NetSuite",owner:"Yahira",assignee:"Dylan",workday:6,notes:"",sheet:"IRB Exp Accruals"},
+    {id:100+(si*7)+6,site:s,status:"not started",task:s+" - Post IRB accruals in NetSuite",owner:"Yahira",assignee:"Dylan",workday:7,notes:"",sheet:"IRB Exp Accruals"},
+  ]),
+  ...[...["San Antonio","Mountain Region","Midwest","LACN","Dallas","Northwell","Astera"]].flatMap((s,si)=>[
+    {id:200+(si*11),site:s,status:"not started",task:s+" - Request OnCore Data file from PWC",owner:"Dylan",assignee:"PWC",workday:8,notes:"",sheet:"Clinical Exp Accruals"},
+    {id:200+(si*11)+1,site:s,status:"done",task:s+" - Pull AP Detail as of Month End",owner:"Dylan",assignee:"Dylan",workday:9,notes:"",sheet:"Clinical Exp Accruals"},
+    {id:200+(si*11)+2,site:s,status:"done",task:s+" - Pull IS detail for procedure expenses",owner:"Dylan",assignee:"Dylan",workday:9,notes:"",sheet:"Clinical Exp Accruals"},
+    {id:200+(si*11)+3,site:s,status:"done",task:s+" - Pull Pending Invoices Report",owner:"Dylan",assignee:"Dylan",workday:9,notes:"",sheet:"Clinical Exp Accruals"},
+    {id:200+(si*11)+4,site:s,status:"not started",task:s+" - Calculate price of scans and labs",owner:"Dylan",assignee:"Dylan",workday:9,notes:"",sheet:"Clinical Exp Accruals"},
+    {id:200+(si*11)+5,site:s,status:"not started",task:s+" - Identify prior month procedures in current month",owner:"Dylan",assignee:"Dylan",workday:9,notes:"",sheet:"Clinical Exp Accruals"},
+    {id:200+(si*11)+6,site:s,status:"not started",task:s+" - Calculate JE based on Oncore report",owner:"Dylan",assignee:"Dylan",workday:9,notes:"",sheet:"Clinical Exp Accruals"},
+    {id:200+(si*11)+7,site:s,status:"not started",task:s+" - Calculate adjustments vs AP/Oncore",owner:"Dylan",assignee:"Dylan",workday:9,notes:"",sheet:"Clinical Exp Accruals"},
+    {id:200+(si*11)+8,site:s,status:"not started",task:s+" - Book clinical exp accruals in NetSuite",owner:"Felicia",assignee:"Dylan",workday:10,notes:"",sheet:"Clinical Exp Accruals"},
+    {id:200+(si*11)+9,site:s,status:"not started",task:s+" - Post clinical exp accruals in NetSuite",owner:"Jim/Yahira",assignee:"Dylan",workday:10,notes:"",sheet:"Clinical Exp Accruals"},
+    {id:200+(si*11)+10,site:s,status:"not started",task:s+" - Pull adjusted IS to verify entries",owner:"",assignee:"Dylan",workday:10,notes:"",sheet:"Clinical Exp Accruals"},
+  ]),
+  {id:400,site:"ALL",status:"not started",task:"Prepare Interco reconciliation",owner:"Jasleen",assignee:"Jasleen",workday:5,notes:"",sheet:"Interco"},
+  {id:401,site:"ALL",status:"not started",task:"Book interco elimination entries",owner:"Jasleen",assignee:"Jasleen",workday:6,notes:"",sheet:"Interco"},
+  {id:402,site:"ALL",status:"not started",task:"Post interco entries in NetSuite",owner:"Jasleen",assignee:"Jasleen",workday:7,notes:"",sheet:"Interco"},
+  {id:403,site:"ALL",status:"not started",task:"Confirm interco balances tie across entities",owner:"Jasleen",assignee:"Jasleen",workday:8,notes:"",sheet:"Interco"},
+  {id:404,site:"ALL",status:"not started",task:"Send interco invoices for approval",owner:"Jasleen",assignee:"Jasleen",workday:8,notes:"",sheet:"Interco"},
+  {id:500,site:"ALL",status:"not started",task:"Pull revenue detail from NetSuite",owner:"Felicia",assignee:"Felicia",workday:1,notes:"",sheet:"Revenue"},
+  {id:501,site:"ALL",status:"not started",task:"Reconcile deferred revenue schedule",owner:"Felicia",assignee:"Felicia",workday:2,notes:"",sheet:"Revenue"},
+  {id:502,site:"ALL",status:"not started",task:"Book revenue recognition JEs",owner:"Felicia",assignee:"Felicia",workday:3,notes:"",sheet:"Revenue"},
+  {id:503,site:"ALL",status:"not started",task:"Post revenue JEs",owner:"Felicia",assignee:"Felicia",workday:4,notes:"",sheet:"Revenue"},
+  {id:504,site:"ALL",status:"not started",task:"Pull final IS for revenue review",owner:"Felicia",assignee:"Felicia",workday:5,notes:"",sheet:"Revenue"},
+];
+
+let tasks = [];
+let nextId = 600;
+let activeSheet = "All";
+let formOpen = false;
+
+/* ── localStorage helpers ── */
+function saveData() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ tasks, nextId }));
+    const badge = document.getElementById("save-badge");
+    badge.innerHTML = '<i class="ti ti-check"></i> Saved';
+    setTimeout(() => { badge.innerHTML = '<i class="ti ti-device-floppy"></i> Auto-saved'; }, 1500);
+  } catch(e) { console.warn("Save failed:", e); }
+}
+
+function loadData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      tasks = parsed.tasks || DEFAULT_TASKS;
+      nextId = parsed.nextId || 600;
+    } else {
+      tasks = JSON.parse(JSON.stringify(DEFAULT_TASKS));
+    }
+  } catch(e) {
+    tasks = JSON.parse(JSON.stringify(DEFAULT_TASKS));
+  }
+}
+
+function clearStorage() {
+  if (confirm("Reset all task data back to the original? This cannot be undone.")) {
+    localStorage.removeItem(STORAGE_KEY);
+    tasks = JSON.parse(JSON.stringify(DEFAULT_TASKS));
+    nextId = 600;
+    renderAll();
+    showToast("Reset to defaults");
+  }
+}
+window.clearStorage = clearStorage;
+
+/* ── status toggle ── */
+function cycleStatus(id) {
+  const t = tasks.find(t => t.id === id);
+  if (!t) return;
+  const cur = STATUSES.indexOf(t.status);
+  t.status = STATUSES[(cur + 1) % STATUSES.length];
+  saveData();
+  renderAll();
+  showToast("Status → " + t.status);
+}
+window.cycleStatus = cycleStatus;
+
+/* ── delete ── */
+function deleteTask(id) {
+  if (!confirm("Delete this task?")) return;
+  tasks = tasks.filter(t => t.id !== id);
+  saveData();
+  renderAll();
+  showToast("Task deleted");
+}
+window.deleteTask = deleteTask;
+
+/* ── add task ── */
+function toggleForm() {
+  formOpen = !formOpen;
+  document.getElementById("add-form").style.display = formOpen ? "block" : "none";
+  document.getElementById("form-toggle-btn").innerHTML = formOpen
+    ? '<i class="ti ti-x"></i> Cancel'
+    : '<i class="ti ti-plus"></i> Add task';
+  if (formOpen) document.getElementById("n-task").focus();
+}
+window.toggleForm = toggleForm;
+
+function addTask() {
+  const taskVal = document.getElementById("n-task").value.trim();
+  if (!taskVal) { document.getElementById("n-task").focus(); return; }
+  const wd = document.getElementById("n-workday").value;
+  tasks.push({
+    id: nextId++,
+    task: taskVal,
+    sheet: document.getElementById("n-sheet").value,
+    site: document.getElementById("n-site").value.trim() || "ALL",
+    owner: document.getElementById("n-owner").value.trim(),
+    assignee: document.getElementById("n-assignee").value.trim(),
+    status: document.getElementById("n-status").value,
+    workday: wd ? parseInt(wd) : 0,
+    notes: document.getElementById("n-notes").value.trim(),
+  });
+  ["n-task","n-site","n-owner","n-assignee","n-workday","n-notes"].forEach(id => document.getElementById(id).value = "");
+  document.getElementById("n-status").value = "not started";
+  saveData();
+  toggleForm();
+  renderAll();
+  showToast("Task added!");
+}
+window.addTask = addTask;
+
+/* ── toast ── */
+function showToast(msg) {
+  const el = document.getElementById("toast");
+  el.textContent = msg;
+  el.classList.add("show");
+  setTimeout(() => el.classList.remove("show"), 2000);
+}
+
+/* ── filters ── */
+function getFiltered() {
+  const s = document.getElementById("f-status").value;
+  const si = document.getElementById("f-site").value;
+  const o = document.getElementById("f-owner").value;
+  const q = document.getElementById("f-search").value.toLowerCase();
+  return tasks.filter(t => {
+    if (activeSheet !== "All" && t.sheet !== activeSheet) return false;
+    if (s && t.status !== s) return false;
+    if (si && t.site !== si) return false;
+    if (o && t.owner !== o) return false;
+    if (q && !t.task.toLowerCase().includes(q) && !(t.site||"").toLowerCase().includes(q)) return false;
+    return true;
+  });
+}
+
+/* ── render metrics ── */
+function renderMetrics() {
+  const done = tasks.filter(t => t.status === "done").length;
+  const inp = tasks.filter(t => t.status === "in progress").length;
+  const ns = tasks.filter(t => t.status === "not started").length;
+  const pct = Math.round((done / tasks.length) * 100);
+  document.getElementById("prog-fill").style.width = pct + "%";
+  document.getElementById("metrics").innerHTML = `
+    <div class="metric"><div class="metric-label"><i class="ti ti-list-check"></i> Total tasks</div><div class="metric-value">${tasks.length}</div></div>
+    <div class="metric"><div class="metric-label"><i class="ti ti-check"></i> Completed</div><div class="metric-value green">${done}</div></div>
+    <div class="metric"><div class="metric-label"><i class="ti ti-clock"></i> In progress</div><div class="metric-value amber">${inp}</div></div>
+    <div class="metric"><div class="metric-label"><i class="ti ti-circle-dashed"></i> Not started</div><div class="metric-value">${ns}</div></div>
+    <div class="metric"><div class="metric-label"><i class="ti ti-chart-pie"></i> % complete</div><div class="metric-value green">${pct}%</div></div>
+  `;
+}
+
+/* ── render tabs ── */
+function renderTabs() {
+  document.getElementById("tab-bar").innerHTML = SHEETS.map(s =>
+    `<button class="tab ${s === activeSheet ? "active" : ""}" onclick="setTab('${s}')">${s}</button>`
+  ).join("");
+}
+window.setTab = function(s) { activeSheet = s; renderTabs(); renderTable(); };
+
+/* ── populate filter dropdowns ── */
+function populateFilters() {
+  const sites = [...new Set(tasks.map(t => t.site).filter(Boolean))].sort();
+  const owners = [...new Set(tasks.map(t => t.owner).filter(Boolean))].sort();
+  const curSite = document.getElementById("f-site").value;
+  const curOwner = document.getElementById("f-owner").value;
+  document.getElementById("f-site").innerHTML = `<option value="">All sites</option>` + sites.map(s => `<option ${s===curSite?"selected":""}>${s}</option>`).join("");
+  document.getElementById("f-owner").innerHTML = `<option value="">All owners</option>` + owners.map(o => `<option ${o===curOwner?"selected":""}>${o}</option>`).join("");
+}
+
+/* ── render table ── */
+function renderTable() {
+  const filtered = getFiltered();
+  const showSheet = activeSheet === "All";
+  if (!filtered.length) {
+    document.getElementById("table-wrap-inner").innerHTML = `<div class="empty"><i class="ti ti-mood-empty"></i>No tasks match your filters</div>`;
+    return;
+  }
+  function badge(t) {
+    const k = t.status === "in progress" ? "in-progress" : t.status === "done" ? "done" : "not-started";
+    const label = t.status === "not started" ? "Not started" : t.status === "in progress" ? "In progress" : "Done";
+    return `<span class="badge ${k}" onclick="cycleStatus(${t.id})" title="Click to change status" role="button">${label}</span>`;
+  }
+  document.getElementById("table-wrap-inner").innerHTML = `
+  <table>
+    <thead><tr>
+      ${showSheet ? `<th style="width:13%">Workstream</th>` : ""}
+      <th style="width:10%">Site</th>
+      <th>Task</th>
+      <th style="width:14%">Status</th>
+      <th style="width:9%">Owner</th>
+      <th style="width:9%">Assignee</th>
+      <th style="width:5%;text-align:center">Day</th>
+      <th style="width:36px"></th>
+    </tr></thead>
+    <tbody>
+    ${filtered.map(t => `<tr>
+      ${showSheet ? `<td style="font-size:12px;color:var(--text2)">${t.sheet}</td>` : ""}
+      <td><span class="site-tag" title="${t.site||""}">${t.site||""}</span></td>
+      <td title="${t.task}${t.notes?" — "+t.notes:""}">${t.task}${t.notes?`<br><span style="font-size:11px;color:var(--text2)">${t.notes}</span>`:""}</td>
+      <td>${badge(t)}</td>
+      <td style="font-size:12px;color:var(--text2)">${t.owner||""}</td>
+      <td style="font-size:12px;color:var(--text2)">${t.assignee||""}</td>
+      <td style="font-size:12px;color:var(--text2);text-align:center">${t.workday > 0 ? "+" + t.workday : t.workday}</td>
+      <td><button class="del-btn" onclick="deleteTask(${t.id})" title="Delete task" aria-label="Delete task"><i class="ti ti-trash"></i></button></td>
+    </tr>`).join("")}
+    </tbody>
+  </table>`;
+}
+
+function renderAll() { renderMetrics(); renderTabs(); populateFilters(); renderTable(); }
+
+/* ── wire up filter events ── */
+document.getElementById("f-status").addEventListener("change", renderTable);
+document.getElementById("f-site").addEventListener("change", renderTable);
+document.getElementById("f-owner").addEventListener("change", renderTable);
+document.getElementById("f-search").addEventListener("input", renderTable);
+
+/* ── enter key submits add form ── */
+document.getElementById("add-form").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") addTask();
+});
+
+/* ── boot ── */
+loadData();
+renderAll();
+</script>
+</body>
+</html>
