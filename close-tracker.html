@@ -94,6 +94,8 @@ td.task-cell{white-space:normal;word-break:break-word}
 .badge.done{background:var(--green-bg);color:var(--green-text)}
 .badge.in-progress{background:var(--amber-bg);color:var(--amber-text)}
 .badge.not-started{background:var(--gray-bg);color:var(--gray-text)}
+.badge.blocked{background:var(--red-bg);color:var(--red-text)}
+.badge.not-applicable{background:#E6F1FB;color:#0C447C}
 
 /* action buttons in table */
 .action-btn{background:none;border:0.5px solid var(--border2);cursor:pointer;font-size:12px;padding:3px 8px;border-radius:var(--radius);font-family:inherit;display:inline-flex;align-items:center;gap:4px;white-space:nowrap;transition:opacity .15s}
@@ -104,6 +106,13 @@ td.task-cell{white-space:normal;word-break:break-word}
 .action-btn.del{color:var(--text2);border-color:transparent;background:none;opacity:0}
 tr:hover .action-btn.del{opacity:1}
 .action-btn.del:hover{color:var(--red-text);background:var(--red-bg);border-color:#F09595}
+.status-select{font-size:12px;height:28px;padding:0 6px;border-radius:var(--radius);border:0.5px solid var(--border2);background:var(--bg);color:var(--text);font-family:inherit;cursor:pointer;max-width:130px;font-weight:500}
+.status-select:focus{outline:none}
+.status-select.s-done{background:var(--green-bg);color:var(--green-text);border-color:var(--green-border)}
+.status-select.s-in-progress{background:var(--amber-bg);color:var(--amber-text);border-color:#FAC775}
+.status-select.s-blocked{background:var(--red-bg);color:var(--red-text);border-color:#F09595}
+.status-select.s-not-applicable{background:#E6F1FB;color:#0C447C;border-color:#85B7EB}
+.status-select.s-not-started{background:var(--gray-bg);color:var(--gray-text);border-color:var(--border2)}
 
 /* site tag */
 .site-tag{font-size:11px;color:var(--text2);background:var(--bg2);padding:2px 7px;border-radius:4px;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis}
@@ -111,6 +120,11 @@ tr:hover .action-btn.del{opacity:1}
 /* timestamp */
 .ts{font-size:11px;color:var(--text2);margin-top:2px}
 .reopen-badge{font-size:10px;background:var(--red-bg);color:var(--red-text);padding:1px 6px;border-radius:10px;margin-left:4px}
+.due-label{font-size:11px;white-space:nowrap}
+.due-label.overdue{color:var(--red-text);font-weight:500}
+.due-label.due-soon{color:var(--amber-text);font-weight:500}
+.day-edit{font-size:12px;height:26px;width:52px;padding:0 5px;border-radius:var(--radius);border:0.5px solid var(--border2);background:var(--bg);color:var(--text);font-family:inherit;text-align:center}
+.day-edit:focus{outline:none;border-color:#1D9E75}
 
 /* link icon */
 .file-link{color:var(--blue-text);font-size:15px;vertical-align:middle;text-decoration:none;margin-left:4px}
@@ -193,7 +207,7 @@ tr:hover .action-btn.del{opacity:1}
   <div class="tab-bar" id="tab-bar"></div>
 
   <div class="controls">
-    <select id="f-status"><option value="">All statuses</option><option value="done">Done</option><option value="in progress">In progress</option><option value="not started">Not started</option></select>
+    <select id="f-status"><option value="">All statuses</option><option value="done">Done</option><option value="in progress">In progress</option><option value="blocked">Blocked</option><option value="not applicable">N/A</option><option value="not started">Not started</option></select>
     <select id="f-site"><option value="">All sites</option></select>
     <select id="f-assignee"><option value="">All assignees</option></select>
     <input type="text" id="f-search" placeholder="Search tasks..." style="width:180px">
@@ -221,7 +235,7 @@ tr:hover .action-btn.del{opacity:1}
     </div>
     <div class="form-grid three">
       <div class="form-field"><label>Status</label>
-        <select id="n-status"><option value="not started">Not started</option><option value="in progress">In progress</option><option value="done">Done</option></select>
+        <select id="n-status"><option value="not started">Not started</option><option value="in progress">In progress</option><option value="blocked">Blocked</option><option value="not applicable">N/A</option><option value="done">Done</option></select>
       </div>
       <div class="form-field"><label>Workday #</label><input type="text" id="n-workday" placeholder="e.g. 3 or -1"><span class="hint">Negative = before close date</span></div>
       <div class="form-field"><label>SharePoint / file link</label><input type="text" id="n-link" placeholder="https://..."></div>
@@ -262,9 +276,15 @@ tr:hover .action-btn.del{opacity:1}
   <div class="modal">
     <h3><i class="ti ti-calendar-plus" style="margin-right:6px"></i>Start new month rollover</h3>
     <p>This will reset all task statuses to <strong>not started</strong>, clear completed-by and timestamps, and update the month label. Your task list stays intact. The current month's data is preserved in Supabase.</p>
-    <div class="form-field" style="margin-bottom:16px">
-      <label>New month label</label>
-      <input type="text" id="rollover-month" placeholder="e.g. June 2026" style="font-size:13px;height:34px;padding:0 10px;border-radius:var(--radius);border:0.5px solid var(--border2);background:var(--bg);color:var(--text);font-family:inherit;width:100%">
+    <div class="form-grid two" style="margin-bottom:16px">
+      <div class="form-field">
+        <label>New month label</label>
+        <input type="text" id="rollover-month" placeholder="e.g. June 2026" style="font-size:13px;height:34px;padding:0 10px;border-radius:var(--radius);border:0.5px solid var(--border2);background:var(--bg);color:var(--text);font-family:inherit;width:100%">
+      </div>
+      <div class="form-field">
+        <label>New close date</label>
+        <input type="date" id="rollover-closedate" style="font-size:13px;height:34px;padding:0 10px;border-radius:var(--radius);border:0.5px solid var(--border2);background:var(--bg);color:var(--text);font-family:inherit;width:100%">
+      </div>
     </div>
     <div class="modal-actions">
       <button class="btn" onclick="closeRollover()">Cancel</button>
@@ -279,6 +299,44 @@ const SUPABASE_URL = "https://trvgyjbkvexpjetbuydm.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRydmd5amJrdmV4cGpldGJ1eWRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MjQwMTcsImV4cCI6MjA5NjEwMDAxN30.gT_WPa0RoledKhbElfGCqG41wdwEpBmuzEG1IeZMap0";
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+
+/* ── due date calculation ── */
+let CLOSE_DATE = new Date(2026, 4, 30); // May 30 2026 — update each month via rollover
+
+function addBusinessDays(base, n){
+  const d = new Date(base);
+  if(n === 0) return d;
+  const step = n > 0 ? 1 : -1;
+  let remaining = Math.abs(n);
+  while(remaining > 0){
+    d.setDate(d.getDate() + step);
+    if(d.getDay() !== 0 && d.getDay() !== 6) remaining--;
+  }
+  return d;
+}
+
+function dueDate(workday){
+  if(workday === null || workday === undefined || workday === "") return null;
+  return addBusinessDays(CLOSE_DATE, parseInt(workday));
+}
+
+function fmtDue(workday){
+  const d = dueDate(workday);
+  if(!d) return "";
+  return d.toLocaleDateString("en-US",{month:"short",day:"numeric"});
+}
+
+function isDueClass(workday){
+  const d = dueDate(workday);
+  if(!d) return "";
+  const today = new Date(); today.setHours(0,0,0,0);
+  const due = new Date(d); due.setHours(0,0,0,0);
+  const diff = Math.round((due - today)/(1000*60*60*24));
+  if(diff < 0)  return "overdue";
+  if(diff <= 2) return "due-soon";
+  return "";
+}
 
 const SHEETS = ["All","ME Accounting","IRB Exp Accruals","Clinical Exp Accruals","Interco","Revenue"];
 let tasks = [];
@@ -389,6 +447,11 @@ async function boot(){
     document.getElementById("username-input").value=currentUser;
     document.getElementById("who-banner").style.display="none";
   }
+  const savedCloseDate=localStorage.getItem("me-tracker-closedate");
+  if(savedCloseDate){
+    const [y,m,d]=savedCloseDate.split("-").map(Number);
+    CLOSE_DATE=new Date(y,m-1,d);
+  }
   document.getElementById("month-label").textContent=monthLabel+" Close";
 
   const {data,error}=await db.from("tasks").select("*").order("id").limit(2000);
@@ -464,6 +527,54 @@ document.addEventListener("DOMContentLoaded", function(){
   if(pinInput) pinInput.addEventListener("keydown", e=>{ if(e.key==="Enter") submitPin(); });
 });
 
+/* ── inline workday editing (all users) ── */
+async function updateWorkday(id, val){
+  const wd = val === "" ? 0 : parseInt(val);
+  if(isNaN(wd)) return;
+  const t = tasks.find(t=>t.id===id);
+  if(!t || t.workday === wd) return;
+  const {error} = await db.from("tasks").update({workday: wd}).eq("id", id);
+  if(error){showToast("Error: "+error.message);return;}
+  t.workday = wd;
+  renderAll();
+  showToast("Due date updated → "+fmtDue(wd));
+}
+window.updateWorkday = updateWorkday;
+
+/* ── inline assignee editing (admin only) ── */
+function editAssignee(id){
+  requireAdmin(()=>_doEditAssignee(id), "Edit assignee");
+}
+window.editAssignee=editAssignee;
+
+function _doEditAssignee(id){
+  const t=tasks.find(t=>t.id===id);
+  if(!t) return;
+  const span=document.getElementById("asgn-"+id);
+  if(!span) return;
+  const cur=t.assignee||"";
+  const input=document.createElement("input");
+  input.type="text";
+  input.value=cur;
+  input.style.cssText="font-size:12px;height:24px;padding:0 6px;border-radius:4px;border:0.5px solid var(--green-border);background:var(--bg);color:var(--text);font-family:inherit;width:100px";
+  span.replaceWith(input);
+  input.focus();
+  input.select();
+  async function save(){
+    const newVal=input.value.trim();
+    const {error}=await db.from("tasks").update({assignee:newVal}).eq("id",id);
+    if(error){showToast("Error: "+error.message);return;}
+    t.assignee=newVal;
+    renderTable();
+    showToast("Assignee updated");
+  }
+  input.addEventListener("blur", save);
+  input.addEventListener("keydown", e=>{
+    if(e.key==="Enter") input.blur();
+    if(e.key==="Escape"){t.assignee=cur;renderTable();}
+  });
+}
+
 /* ── real-time subscription ── */
 function subscribeRealtime(){
   db.channel("tasks-changes")
@@ -484,18 +595,14 @@ function subscribeRealtime(){
     });
 }
 
-/* ── complete / reopen ── */
+/* ── complete / reopen (captures who + when) ── */
 async function completeTask(id){
   if(!currentUser){showToast("Please set your name first");document.getElementById("who-banner").style.display="flex";return;}
   const now=new Date().toISOString();
-  const {error}=await db.from("tasks").update({
-    status:"done",
-    completed_by:currentUser,
-    completed_at:now,
-  }).eq("id",id);
+  const {error}=await db.from("tasks").update({status:"done",completed_by:currentUser,completed_at:now}).eq("id",id);
   if(error){showToast("Error: "+error.message);return;}
   const t=tasks.find(t=>t.id===id);
-  if(t){Object.assign(t,{status:"done",completed_by:currentUser,completed_at:now});}
+  if(t) Object.assign(t,{status:"done",completed_by:currentUser,completed_at:now});
   renderAll();
   showToast("Marked complete by "+currentUser);
 }
@@ -506,19 +613,54 @@ async function reopenTask(id){
   const now=new Date().toISOString();
   const t=tasks.find(t=>t.id===id);
   const newCount=(t?.reopen_count||0)+1;
-  const {error}=await db.from("tasks").update({
-    status:"in progress",
-    reopened_at:now,
-    reopen_count:newCount,
-    completed_by:null,
-    completed_at:null,
-  }).eq("id",id);
+  const {error}=await db.from("tasks").update({status:"in progress",reopened_at:now,reopen_count:newCount,completed_by:null,completed_at:null}).eq("id",id);
   if(error){showToast("Error: "+error.message);return;}
-  if(t){Object.assign(t,{status:"in progress",reopened_at:now,reopen_count:newCount,completed_by:null,completed_at:null});}
+  if(t) Object.assign(t,{status:"in progress",reopened_at:now,reopen_count:newCount,completed_by:null,completed_at:null});
   renderAll();
-  showToast("Task reopened — flagged for review");
+  showToast("Task reopened");
 }
 window.reopenTask=reopenTask;
+
+function completedCell(t){
+  if(!t.completed_at) return `<span style="font-size:11px;color:var(--text2)">—</span>`;
+  const who=t.completed_by?`<div style="font-size:11px;color:var(--green-text);font-weight:500">${t.completed_by}</div>`:"";
+  const when=`<div style="font-size:11px;color:var(--text2)">${fmtTime(t.completed_at)}</div>`;
+  return `<div>${who}${when}</div>`;
+}
+
+function statusCell(t){
+  const sMap={'done':'s-done','in progress':'s-in-progress','blocked':'s-blocked','not applicable':'s-not-applicable','not started':'s-not-started'};
+  const lMap={"not started":"Not started","in progress":"In progress","blocked":"Blocked","not applicable":"N/A","done":"Done"};
+  if(t.status==="done"){
+    return `<div style="display:flex;flex-direction:column;gap:3px">
+      <span class="badge done" style="display:inline-flex;align-items:center;gap:4px"><i class="ti ti-check" style="font-size:11px"></i> Done</span>
+      <button class="action-btn reopen" onclick="reopenTask(${t.id})" style="font-size:11px;padding:2px 7px"><i class="ti ti-rotate-clockwise"></i> Reopen</button>
+      ${t.reopen_count>0?`<span class="reopen-badge">${t.reopen_count}x reopened</span>`:""}
+    </div>`;
+  }
+  return `<select class="status-select ${sMap[t.status]||'s-not-started'}" onchange="updateStatus(${t.id}, this.value);this.className='status-select '+(${JSON.stringify(sMap)}[this.value]||'s-not-started')">
+    ${["not started","in progress","blocked","not applicable","done"].map(o=>`<option value="${o}" ${o===t.status?"selected":""}>${lMap[o]}</option>`).join("")}
+  </select>`;
+}
+
+/* ── status dropdown — marks done with timestamp, locks until reopen ── */
+async function updateStatus(id, newStatus){
+  if(!currentUser){showToast("Please set your name first");document.getElementById("who-banner").style.display="flex";return;}
+  const t=tasks.find(t=>t.id===id);
+  if(!t) return;
+  const now=new Date().toISOString();
+  const update={status:newStatus};
+  if(newStatus==="done"){
+    update.completed_by=currentUser;
+    update.completed_at=now;
+  }
+  const {error}=await db.from("tasks").update(update).eq("id",id);
+  if(error){showToast("Error: "+error.message);return;}
+  Object.assign(t,update);
+  renderAll();
+  showToast(newStatus==="done"?"Completed by "+currentUser:"Status → "+newStatus);
+}
+window.updateStatus=updateStatus;
 
 /* ── add task ── */
 function toggleForm(){
@@ -593,6 +735,12 @@ window.closeRollover=closeRollover;
 async function doRollover(){
   const label=document.getElementById("rollover-month").value.trim();
   if(!label){return;}
+  const closeDateVal=document.getElementById("rollover-closedate").value;
+  if(closeDateVal){
+    const [y,m,d]=closeDateVal.split("-").map(Number);
+    CLOSE_DATE.setFullYear(y); CLOSE_DATE.setMonth(m-1); CLOSE_DATE.setDate(d);
+    localStorage.setItem("me-tracker-closedate", closeDateVal);
+  }
   const updates=tasks.map(t=>db.from("tasks").update({
     status:"not started",completed_by:null,completed_at:null,
     reopened_at:null,reopen_count:0,
@@ -633,9 +781,15 @@ function fmtTime(iso){
 }
 
 function statusBadge(t){
-  const k=t.status==="in progress"?"in-progress":t.status==="done"?"done":"not-started";
-  const label=t.status==="not started"?"Not started":t.status==="in progress"?"In progress":"Done";
-  return `<span class="badge ${k}">${label}</span>`;
+  const statusMap={
+    "done":         {k:"done",          label:"Done"},
+    "in progress":  {k:"in-progress",   label:"In progress"},
+    "blocked":      {k:"blocked",       label:"Blocked"},
+    "not applicable":{k:"not-applicable",label:"N/A"},
+    "not started":  {k:"not-started",   label:"Not started"},
+  };
+  const s = statusMap[t.status] || statusMap["not started"];
+  return `<span class="badge ${s.k}">${s.label}</span>`;
 }
 
 function actionBtn(t){
@@ -652,14 +806,19 @@ function renderMetrics(){
   const done=tasks.filter(t=>t.status==="done").length;
   const inp=tasks.filter(t=>t.status==="in progress").length;
   const ns=tasks.filter(t=>t.status==="not started").length;
+  const blocked=tasks.filter(t=>t.status==="blocked").length;
+  const na=tasks.filter(t=>t.status==="not applicable").length;
   const reopened=tasks.filter(t=>(t.reopen_count||0)>0).length;
-  const pct=Math.round((done/tasks.length)*100);
+  const applicable=tasks.filter(t=>t.status!=="not applicable").length;
+  const pct=applicable>0?Math.round((done/applicable)*100):0;
   document.getElementById("prog-fill").style.width=pct+"%";
   document.getElementById("metrics").innerHTML=`
     <div class="metric"><div class="metric-label"><i class="ti ti-list-check"></i> Total</div><div class="metric-value">${tasks.length}</div></div>
     <div class="metric"><div class="metric-label"><i class="ti ti-check"></i> Completed</div><div class="metric-value green">${done}</div></div>
     <div class="metric"><div class="metric-label"><i class="ti ti-clock"></i> In progress</div><div class="metric-value amber">${inp}</div></div>
     <div class="metric"><div class="metric-label"><i class="ti ti-circle-dashed"></i> Not started</div><div class="metric-value">${ns}</div></div>
+    ${blocked>0?`<div class="metric"><div class="metric-label"><i class="ti ti-alert-triangle"></i> Blocked</div><div class="metric-value red">${blocked}</div></div>`:""}
+    ${na>0?`<div class="metric"><div class="metric-label"><i class="ti ti-minus"></i> N/A</div><div class="metric-value" style="color:var(--blue-text)">${na}</div></div>`:""}
     <div class="metric"><div class="metric-label"><i class="ti ti-chart-pie"></i> % complete</div><div class="metric-value green">${pct}%</div></div>
     ${reopened>0?`<div class="metric"><div class="metric-label"><i class="ti ti-rotate-clockwise"></i> Reopened</div><div class="metric-value red">${reopened}</div></div>`:""}
   `;
@@ -694,11 +853,12 @@ function renderTable(){
       ${showSheet?`<th style="width:12%">Workstream</th>`:""}
       <th style="width:9%">Site</th>
       <th>Task</th>
-      <th style="width:11%">Status</th>
       <th style="width:7%">Owner</th>
       <th style="width:7%">Assignee</th>
-      <th style="width:5%;text-align:center">Day</th>
-      <th style="width:18%">Action</th>
+      <th style="width:7%;text-align:center">Day</th>
+      <th style="width:7%;text-align:center">Due</th>
+      <th style="width:16%">Update status</th>
+      <th style="width:13%">Completed</th>
       <th style="width:32px"></th>
     </tr></thead>
     <tbody>
@@ -706,11 +866,18 @@ function renderTable(){
       ${showSheet?`<td style="font-size:12px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${t.sheet}">${t.sheet}</td>`:""}
       <td><span class="site-tag" title="${t.site||""}">${t.site||""}</span></td>
       <td class="task-cell">${t.task}${t.notes?`<br><span style="font-size:11px;color:var(--text2)">${t.notes}</span>`:""}${t.file_link?`<a href="${t.file_link}" class="file-link" target="_blank" title="Open file"><i class="ti ti-external-link"></i></a>`:""}</td>
-      <td>${statusBadge(t)}</td>
       <td style="font-size:12px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.owner||""}</td>
-      <td style="font-size:12px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.assignee||""}</td>
-      <td style="font-size:12px;color:var(--text2);text-align:center">${t.workday>0?"+"+t.workday:t.workday}</td>
-      <td style="white-space:normal">${actionBtn(t)}</td>
+      <td style="font-size:12px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+        <span id="asgn-${t.id}" onclick="editAssignee(${t.id})" title="Click to edit assignee" style="cursor:pointer;border-bottom:1px dashed var(--border2)">${t.assignee||"—"}</span>
+      </td>
+      <td style="text-align:center">
+        <input class="day-edit" type="number" value="${t.workday}" onchange="updateWorkday(${t.id}, this.value)" onblur="updateWorkday(${t.id}, this.value)" title="Edit workday number">
+      </td>
+      <td style="text-align:center">
+        <span class="due-label ${isDueClass(t.workday)}">${fmtDue(t.workday)}</span>
+      </td>
+      <td>${statusCell(t)}</td>
+      <td style="white-space:normal">${completedCell(t)}</td>
       <td><button class="action-btn del" onclick="deleteTask(${t.id})" title="Delete" aria-label="Delete task"><i class="ti ti-trash"></i></button></td>
     </tr>`).join("")}
     </tbody>
