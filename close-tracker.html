@@ -310,6 +310,7 @@ input[type=checkbox]{cursor:pointer;width:15px;height:15px;accent-color:#1D9E75}
           <option value="Clinical Exp Accruals">Clinical Exp Accruals</option>
           <option value="Interco">Interco</option>
           <option value="Revenue">Revenue</option>
+          <option value="Financial Controls">Financial Controls</option>
         </select>
       </div>
     </div>
@@ -454,7 +455,7 @@ function isDueClass(workday){
   return "";
 }
 
-const SHEETS = ["All","ME Accounting","IRB Exp Accruals","Clinical Exp Accruals","Interco","Revenue","📅 Calendar","👤 My Tasks"];
+const SHEETS = ["All","ME Accounting","IRB Exp Accruals","Clinical Exp Accruals","Interco","Revenue","Financial Controls","📅 Calendar","👤 My Tasks"];
 let tasks = [];
 let activeSheet = "All";
 let formOpen = false;
