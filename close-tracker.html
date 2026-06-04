@@ -81,10 +81,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .btn:disabled{opacity:.45;cursor:not-allowed}
 
 /* table */
-.table-wrap{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:16px}
-table{width:100%;border-collapse:collapse;font-size:13px}
+.table-wrap{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);overflow-x:auto;margin-bottom:16px}
+table{width:100%;min-width:1400px;border-collapse:collapse;font-size:13px;table-layout:fixed}
 th{text-align:left;padding:9px 12px;font-weight:500;font-size:12px;color:var(--text2);border-bottom:0.5px solid var(--border);background:var(--bg2);white-space:nowrap}
-td{padding:8px 12px;border-bottom:0.5px solid var(--border);vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:0}
+td{padding:8px 12px;border-bottom:0.5px solid var(--border);vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:var(--bg2)}
 td.task-cell{white-space:normal;word-break:break-word}
@@ -170,6 +170,87 @@ tr:hover .action-btn.del{opacity:1}
 
 .empty{text-align:center;padding:36px;color:var(--text2);font-size:13px}
 .empty i{font-size:28px;display:block;margin-bottom:8px}
+
+.notes-cell{font-size:12px;color:var(--text2);white-space:normal;word-break:break-word;max-width:200px}
+.notes-input{font-size:12px;width:100%;min-height:32px;padding:4px 8px;border-radius:var(--radius);border:0.5px solid var(--border2);background:var(--bg);color:var(--text);font-family:inherit;resize:none;line-height:1.4}
+.notes-input:focus{outline:none;border-color:#1D9E75}
+.blocker-input{border-color:#F09595}
+.blocker-input:focus{border-color:var(--red-text)}
+.history-btn{font-size:11px;padding:2px 7px;border-radius:var(--radius);border:0.5px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:3px}
+.history-btn:hover{background:var(--bg2)}
+.history-panel{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius);padding:10px 12px;margin-top:6px;font-size:11px}
+.history-row{display:flex;gap:8px;padding:3px 0;border-bottom:0.5px solid var(--border);align-items:baseline}
+.history-row:last-child{border-bottom:none}
+.history-who{color:var(--text);font-weight:500;min-width:70px}
+.history-when{color:var(--text2);min-width:90px}
+.history-what{color:var(--text2);flex:1}
+.archived-row td{opacity:.45}
+.archive-btn{font-size:11px;padding:2px 7px;border-radius:var(--radius);border:0.5px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-family:inherit}
+.archive-btn:hover{background:var(--bg2)}
+.archive-btn.archived{color:var(--amber-text);border-color:#FAC775;background:var(--amber-bg)}
+.show-archived-btn{font-size:12px;padding:4px 10px;border-radius:var(--radius);border:0.5px solid var(--border2);cursor:pointer;background:transparent;color:var(--text2);font-family:inherit}
+.show-archived-btn.active{background:var(--amber-bg);color:var(--amber-text);border-color:#FAC775}
+.blocked-escalation{background:var(--red-bg);border:0.5px solid #F09595;border-radius:var(--radius);padding:8px 12px;margin-bottom:12px;font-size:13px;color:var(--red-text);display:flex;align-items:center;gap:8px}
+
+/* ── calendar tab ── */
+.cal-wrap{padding:8px 0}
+.cal-week{margin-bottom:20px}
+.cal-week-header{font-size:13px;font-weight:500;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.cal-week-header .wd-range{font-size:12px;color:var(--text2);font-weight:400}
+.cal-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}
+.cal-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:10px 12px}
+.cal-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.cal-card-task{font-size:12px;font-weight:500;color:var(--text);line-height:1.4}
+.cal-card-meta{font-size:11px;color:var(--text2)}
+.cal-card.s-done{border-left:3px solid #1D9E75}
+.cal-card.s-in-progress{border-left:3px solid #BA7517}
+.cal-card.s-blocked{border-left:3px solid #A32D2D}
+.cal-card.s-not-applicable{border-left:3px solid #185FA5}
+.cal-card.s-not-started{border-left:3px solid var(--border2)}
+.cal-empty{font-size:12px;color:var(--text2);padding:8px 0}
+
+.offline-banner{display:none;background:#412402;color:#FAC775;border:0.5px solid #FAC775;border-radius:var(--radius);padding:8px 14px;margin-bottom:12px;font-size:13px;align-items:center;gap:8px}
+.offline-banner.show{display:flex}
+
+.my-tasks-wrap{padding:8px 0}
+.my-tasks-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.my-tasks-header h2{font-size:18px;font-weight:500}
+.mt-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:20px}
+.mt-section{margin-bottom:20px}
+.mt-section-title{font-size:13px;font-weight:500;color:var(--text2);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.mt-task-row{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);margin-bottom:6px}
+.mt-task-row:hover{background:var(--bg2)}
+.mt-task-info{flex:1;min-width:0}
+.mt-task-name{font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mt-task-meta{font-size:11px;color:var(--text2);margin-top:2px}
+.mt-task-due{font-size:11px;white-space:nowrap}
+
+.bulk-bar{display:none;background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--radius-lg);padding:10px 14px;margin-bottom:12px;align-items:center;gap:10px;flex-wrap:wrap}
+.bulk-bar.show{display:flex}
+.bulk-count{font-size:13px;font-weight:500;color:var(--text)}
+.cb-row{width:20px;text-align:center}
+input[type=checkbox]{cursor:pointer;width:15px;height:15px;accent-color:#1D9E75}
+
+.summary-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:flex-start;justify-content:center;padding-top:40px;overflow-y:auto}
+.summary-modal-bg.open{display:flex}
+.summary-modal{background:var(--bg);border-radius:var(--radius-lg);border:0.5px solid var(--border2);padding:28px;width:90%;max-width:700px;margin-bottom:40px}
+.summary-modal h2{font-size:20px;font-weight:500;margin-bottom:4px}
+.summary-subtitle{font-size:13px;color:var(--text2);margin-bottom:20px}
+.summary-workstream{margin-bottom:16px}
+.summary-workstream-name{font-size:14px;font-weight:500;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
+.summary-bar-wrap{height:8px;background:var(--bg2);border-radius:4px;overflow:hidden;margin-bottom:4px}
+.summary-bar-fill{height:100%;background:#1D9E75;border-radius:4px}
+.summary-stats{display:flex;gap:12px;font-size:12px;color:var(--text2)}
+.summary-member{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:var(--bg2);border-radius:var(--radius);margin-bottom:4px;font-size:13px}
+.summary-member-name{font-weight:500}
+.summary-member-stats{font-size:12px;color:var(--text2);display:flex;gap:10px}
+@media print{
+  .summary-modal-bg{position:relative;padding:0;background:none}
+  .summary-modal{width:100%;max-width:100%;border:none;box-shadow:none}
+  .no-print{display:none!important}
+}
+
+.snap-badge{font-size:11px;background:var(--blue-bg);color:var(--blue-text);padding:2px 8px;border-radius:10px;border:0.5px solid var(--blue-border)}
 </style>
 </head>
 <body>
@@ -187,6 +268,7 @@ tr:hover .action-btn.del{opacity:1}
       <span id="sync-indicator" style="font-size:12px;color:var(--text2);display:flex;align-items:center;gap:4px">
         <span class="status-dot" id="sync-dot"></span><span id="sync-text">Connecting...</span>
       </span>
+      <button class="btn" onclick="openSummary()"><i class="ti ti-chart-bar"></i> Summary</button>
       <button class="btn blue" onclick="requireAdmin(openRollover, 'New month rollover')"><i class="ti ti-calendar-plus"></i> New month rollover</button>
       <button class="btn" onclick="requireAdmin(confirmReset, 'Reset tracker')"><i class="ti ti-refresh"></i> Reset</button>
     </div>
@@ -202,6 +284,8 @@ tr:hover .action-btn.del{opacity:1}
   </div>
 
   <div id="toast" class="toast"></div>
+  <div class="offline-banner" id="offline-banner"><i class="ti ti-wifi-off" style="font-size:16px"></i> You're offline — changes won't save until you reconnect.</div>
+  <div id="blocker-banner"></div>
   <div class="metrics" id="metrics"></div>
   <div class="progress-wrap"><div class="progress-fill" id="prog-fill"></div></div>
   <div class="tab-bar" id="tab-bar"></div>
@@ -211,6 +295,7 @@ tr:hover .action-btn.del{opacity:1}
     <select id="f-site"><option value="">All sites</option></select>
     <select id="f-assignee"><option value="">All assignees</option></select>
     <input type="text" id="f-search" placeholder="Search tasks..." style="width:180px">
+    <button class="show-archived-btn" id="archived-toggle" onclick="toggleArchived()"><i class="ti ti-archive"></i> Show archived</button>
     <button class="btn green" onclick="toggleForm()" id="form-toggle-btn"><i class="ti ti-plus"></i> Add task</button>
   </div>
 
@@ -249,6 +334,19 @@ tr:hover .action-btn.del{opacity:1}
     </div>
   </div>
 
+  <div class="bulk-bar" id="bulk-bar">
+    <span class="bulk-count" id="bulk-count">0 selected</span>
+    <select id="bulk-status-sel" style="font-size:13px;height:32px;padding:0 8px;border-radius:var(--radius);border:0.5px solid var(--border2);background:var(--bg);color:var(--text);font-family:inherit">
+      <option value="">Set status...</option>
+      <option value="not started">Not started</option>
+      <option value="in progress">In progress</option>
+      <option value="blocked">Blocked</option>
+      <option value="not applicable">N/A</option>
+      <option value="done">Done</option>
+    </select>
+    <button class="btn green" onclick="applyBulkStatus()"><i class="ti ti-check"></i> Apply to selected</button>
+    <button class="btn" onclick="clearSelection()"><i class="ti ti-x"></i> Clear</button>
+  </div>
   <div class="table-wrap"><div id="table-inner"></div></div>
 
 </div>
@@ -271,10 +369,28 @@ tr:hover .action-btn.del{opacity:1}
   </div>
 </div>
 
+
+<!-- close progress summary modal -->
+<div class="summary-modal-bg" id="summary-modal">
+  <div class="summary-modal">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px">
+      <h2 id="summary-title">Close Progress Summary</h2>
+      <div style="display:flex;gap:8px" class="no-print">
+        <button class="btn" onclick="window.print()"><i class="ti ti-printer"></i> Print</button>
+        <button class="btn" onclick="downloadSummary()"><i class="ti ti-download"></i> Download</button>
+        <button class="btn" onclick="closeSummary()"><i class="ti ti-x"></i></button>
+      </div>
+    </div>
+    <div class="summary-subtitle" id="summary-subtitle"></div>
+    <div id="summary-body"></div>
+  </div>
+</div>
+
 <!-- rollover modal -->
 <div class="modal-bg" id="rollover-modal">
   <div class="modal">
     <h3><i class="ti ti-calendar-plus" style="margin-right:6px"></i>Start new month rollover</h3>
+    <div style="background:var(--amber-bg);border:0.5px solid #FAC775;border-radius:var(--radius);padding:8px 12px;margin-bottom:14px;font-size:12px;color:var(--amber-text);display:flex;align-items:center;justify-content:space-between;gap:8px"><span><i class="ti ti-alert-triangle"></i> Save a snapshot of this month before rolling over</span><button class="btn" style="font-size:12px;height:28px;padding:0 10px" onclick="saveMonthlySnapshot()"><i class="ti ti-download"></i> Download snapshot</button></div>
     <p>This will reset all task statuses to <strong>not started</strong>, clear completed-by and timestamps, and update the month label. Your task list stays intact. The current month's data is preserved in Supabase.</p>
     <div class="form-grid two" style="margin-bottom:16px">
       <div class="form-field">
@@ -338,10 +454,12 @@ function isDueClass(workday){
   return "";
 }
 
-const SHEETS = ["All","ME Accounting","IRB Exp Accruals","Clinical Exp Accruals","Interco","Revenue"];
+const SHEETS = ["All","ME Accounting","IRB Exp Accruals","Clinical Exp Accruals","Interco","Revenue","📅 Calendar","👤 My Tasks"];
 let tasks = [];
 let activeSheet = "All";
 let formOpen = false;
+let showArchived = false;
+let expandedHistory = {};
 let currentUser = localStorage.getItem("me-tracker-username") || "";
 let monthLabel = localStorage.getItem("me-tracker-month") || "May 2026";
 let nextId = 600;
@@ -488,6 +606,429 @@ function setSyncStatus(live){
 }
 
 
+
+/* ── archived toggle ── */
+function toggleArchived(){
+  showArchived=!showArchived;
+  const btn=document.getElementById("archived-toggle");
+  btn.classList.toggle("active",showArchived);
+  btn.innerHTML=showArchived?'<i class="ti ti-archive"></i> Hide archived':'<i class="ti ti-archive"></i> Show archived';
+  renderTable();
+}
+window.toggleArchived=toggleArchived;
+
+async function toggleArchive(id){
+  const t=tasks.find(t=>t.id===id);
+  if(!t) return;
+  const newVal=!t.archived;
+  const {error}=await db.from("tasks").update({archived:newVal}).eq("id",id);
+  if(error){showToast("Error: "+error.message);return;}
+  t.archived=newVal;
+  await logHistory(id,"archived",String(!newVal),String(newVal));
+  renderAll();
+  showToast(newVal?"Task archived":"Task unarchived");
+}
+window.toggleArchive=toggleArchive;
+
+/* ── notes saving ── */
+async function saveNotes(id, val){
+  const t=tasks.find(t=>t.id===id);
+  if(!t||t.general_notes===val) return;
+  const {error}=await db.from("tasks").update({general_notes:val}).eq("id",id);
+  if(error){showToast("Error: "+error.message);return;}
+  t.general_notes=val;
+  showToast("Note saved");
+}
+window.saveNotes=saveNotes;
+
+async function saveBlockerNotes(id, val){
+  const t=tasks.find(t=>t.id===id);
+  if(!t||t.blocker_notes===val) return;
+  const {error}=await db.from("tasks").update({blocker_notes:val}).eq("id",id);
+  if(error){showToast("Error: "+error.message);return;}
+  t.blocker_notes=val;
+  showToast("Blocker note saved");
+}
+window.saveBlockerNotes=saveBlockerNotes;
+
+/* ── history logging ── */
+async function logHistory(taskId, field, oldVal, newVal){
+  if(!currentUser) return;
+  await db.from("task_history").insert({
+    task_id:taskId,
+    changed_by:currentUser,
+    changed_at:new Date().toISOString(),
+    field,
+    old_value:oldVal||"",
+    new_value:newVal||""
+  });
+}
+
+let historyCache={};
+
+async function toggleHistory(id){
+  if(expandedHistory[id]){
+    delete expandedHistory[id];
+    renderTable();
+    return;
+  }
+  const {data,error}=await db.from("task_history").select("*").eq("task_id",id).order("changed_at",{ascending:false}).limit(20);
+  historyCache[id]=data||[];
+  expandedHistory[id]=true;
+  renderTable();
+}
+window.toggleHistory=toggleHistory;
+
+function renderHistory(id){
+  const rows=historyCache[id]||[];
+  if(!rows.length) return `<div style="color:var(--text2);font-size:11px">No history yet</div>`;
+  return rows.map(r=>`
+    <div class="history-row">
+      <span class="history-who">${r.changed_by||"?"}</span>
+      <span class="history-when">${fmtTime(r.changed_at)}</span>
+      <span class="history-what">${r.field}: <b>${r.old_value||"—"}</b> → <b>${r.new_value||"—"}</b></span>
+    </div>`).join("");
+}
+
+
+/* ── my tasks view ── */
+function renderMyTasks(){
+  const wrap = document.getElementById("table-inner");
+  if(!currentUser){
+    wrap.innerHTML=`<div class="empty"><i class="ti ti-user" style="font-size:28px;display:block;margin-bottom:8px"></i>Set your name to see your tasks</div>`;
+    return;
+  }
+  const mine = tasks.filter(t => (t.assignee||"").trim().toLowerCase() === currentUser.trim().toLowerCase() && !t.archived);
+  if(!mine.length){
+    wrap.innerHTML=`<div class="empty"><i class="ti ti-check" style="font-size:28px;display:block;margin-bottom:8px"></i>No tasks assigned to ${currentUser}</div>`;
+    return;
+  }
+  const done=mine.filter(t=>t.status==="done");
+  const inprog=mine.filter(t=>t.status==="in progress");
+  const blocked=mine.filter(t=>t.status==="blocked");
+  const notstarted=mine.filter(t=>t.status==="not started");
+  const na=mine.filter(t=>t.status==="not applicable");
+  const pct=Math.round((done.length/mine.filter(t=>t.status!=="not applicable").length||1)*100);
+
+  const sMap={'done':'s-done','in progress':'s-in-progress','blocked':'s-blocked','not applicable':'s-not-applicable','not started':'s-not-started'};
+  const lMap={"not started":"Not started","in progress":"In progress","blocked":"Blocked","not applicable":"N/A","done":"Done"};
+
+  function taskRow(t){
+    const dc=isDueClass(t.workday);
+    return `<div class="mt-task-row">
+      <div style="padding-top:2px"><span class="badge ${sMap[t.status]||'s-not-started'}" style="font-size:11px">${lMap[t.status]||t.status}</span></div>
+      <div class="mt-task-info">
+        <div class="mt-task-name" title="${t.task}">${t.task}</div>
+        <div class="mt-task-meta">${t.sheet} ${t.site?"· "+t.site:""} ${t.blocker_notes?`<span style="color:var(--red-text)">· ${t.blocker_notes}</span>`:""}</div>
+      </div>
+      <div class="mt-task-due ${dc}">${fmtDue(t.workday)}</div>
+    </div>`;
+  }
+
+  function section(title, icon, items, color){
+    if(!items.length) return "";
+    return `<div class="mt-section">
+      <div class="mt-section-title" style="color:${color}"><i class="ti ${icon}"></i> ${title} (${items.length})</div>
+      ${items.sort((a,b)=>(a.workday||0)-(b.workday||0)).map(taskRow).join("")}
+    </div>`;
+  }
+
+  wrap.innerHTML=`<div class="my-tasks-wrap">
+    <div class="my-tasks-header">
+      <h2><i class="ti ti-user" style="font-size:18px;margin-right:6px;vertical-align:-2px"></i>${currentUser}'s tasks</h2>
+      <span style="font-size:13px;color:var(--text2)">${done.length} of ${mine.filter(t=>t.status!=="not applicable").length} completed · ${pct}%</span>
+    </div>
+    <div class="mt-metrics">
+      <div class="metric"><div class="metric-label">Assigned</div><div class="metric-value">${mine.length}</div></div>
+      <div class="metric"><div class="metric-label">Done</div><div class="metric-value green">${done.length}</div></div>
+      <div class="metric"><div class="metric-label">In progress</div><div class="metric-value amber">${inprog.length}</div></div>
+      ${blocked.length?`<div class="metric"><div class="metric-label">Blocked</div><div class="metric-value red">${blocked.length}</div></div>`:""}
+      <div class="metric"><div class="metric-label">Not started</div><div class="metric-value">${notstarted.length}</div></div>
+    </div>
+    <div style="height:6px;background:var(--bg2);border-radius:3px;margin-bottom:20px;overflow:hidden">
+      <div style="height:100%;width:${pct}%;background:#1D9E75;border-radius:3px;transition:width .4s"></div>
+    </div>
+    ${section("Blocked","ti-alert-triangle",blocked,"var(--red-text)")}
+    ${section("In progress","ti-clock",inprog,"var(--amber-text)")}
+    ${section("Not started","ti-circle-dashed",notstarted,"var(--text2)")}
+    ${section("Done","ti-check",done,"var(--green-text)")}
+    ${na.length?section("N/A","ti-minus",na,"var(--blue-text)"):""}
+  </div>`;
+}
+
+
+/* ── bulk status update ── */
+let selectedIds = new Set();
+
+function onCheckboxChange(){
+  selectedIds = new Set(
+    [...document.querySelectorAll(".task-cb:checked")].map(cb=>parseInt(cb.dataset.id))
+  );
+  const bar = document.getElementById("bulk-bar");
+  const count = document.getElementById("bulk-count");
+  bar.classList.toggle("show", selectedIds.size > 0);
+  if(count) count.textContent = selectedIds.size + " selected";
+}
+window.onCheckboxChange = onCheckboxChange;
+
+function toggleSelectAll(cb){
+  document.querySelectorAll(".task-cb").forEach(c=>{ c.checked=cb.checked; });
+  onCheckboxChange();
+}
+window.toggleSelectAll = toggleSelectAll;
+
+function clearSelection(){
+  selectedIds.clear();
+  document.querySelectorAll(".task-cb").forEach(c=>c.checked=false);
+  const sa = document.getElementById("select-all");
+  if(sa) sa.checked=false;
+  document.getElementById("bulk-bar").classList.remove("show");
+}
+window.clearSelection = clearSelection;
+
+async function applyBulkStatus(){
+  if(!currentUser){showToast("Please set your name first");return;}
+  const newStatus = document.getElementById("bulk-status-sel").value;
+  if(!newStatus){showToast("Pick a status first");return;}
+  if(!selectedIds.size){showToast("No tasks selected");return;}
+  if(!confirm(`Set ${selectedIds.size} task(s) to "${newStatus}"?`)) return;
+  const now = new Date().toISOString();
+  const ids = [...selectedIds];
+  const update = {status:newStatus};
+  if(newStatus==="done"){update.completed_by=currentUser;update.completed_at=now;update.blocked_since=null;}
+  else if(newStatus==="blocked"){update.blocked_since=now;}
+  else {update.blocked_since=null;}
+  const {error} = await db.from("tasks").update(update).in("id",ids);
+  if(error){showToast("Error: "+error.message);return;}
+  ids.forEach(id=>{
+    const t=tasks.find(t=>t.id===id);
+    if(t) Object.assign(t,update);
+  });
+  clearSelection();
+  renderAll();
+  showToast(`Updated ${ids.length} tasks to "${newStatus}"`);
+}
+window.applyBulkStatus = applyBulkStatus;
+
+
+/* ── close progress summary ── */
+function openSummary(){
+  const title = document.getElementById("summary-title");
+  const subtitle = document.getElementById("summary-subtitle");
+  const body = document.getElementById("summary-body");
+  title.textContent = monthLabel + " Close Progress Summary";
+  subtitle.textContent = "Generated " + new Date().toLocaleDateString("en-US",{weekday:"long",year:"numeric",month:"long",day:"numeric"}) + " · " + tasks.length + " total tasks";
+
+  const sheets = ["ME Accounting","IRB Exp Accruals","Clinical Exp Accruals","Interco","Revenue"];
+  let bodyHtml = "<h3 style='font-size:15px;font-weight:500;margin-bottom:12px'>Progress by workstream</h3>";
+
+  sheets.forEach(sheet=>{
+    const st = tasks.filter(t=>t.sheet===sheet&&!t.archived);
+    if(!st.length) return;
+    const done=st.filter(t=>t.status==="done").length;
+    const blocked=st.filter(t=>t.status==="blocked").length;
+    const inprog=st.filter(t=>t.status==="in progress").length;
+    const applicable=st.filter(t=>t.status!=="not applicable").length;
+    const pct=applicable?Math.round((done/applicable)*100):0;
+    bodyHtml+=`<div class="summary-workstream">
+      <div class="summary-workstream-name">
+        <span>${sheet}</span>
+        <span style="font-size:13px;color:${pct===100?'var(--green-text)':'var(--text2)'};font-weight:500">${pct}%</span>
+      </div>
+      <div class="summary-bar-wrap"><div class="summary-bar-fill" style="width:${pct}%"></div></div>
+      <div class="summary-stats">
+        <span><b style="color:var(--green-text)">${done}</b> done</span>
+        <span><b>${inprog}</b> in progress</span>
+        ${blocked?`<span><b style="color:var(--red-text)">${blocked}</b> blocked</span>`:""}
+        <span><b>${applicable}</b> total</span>
+      </div>
+    </div>`;
+  });
+
+  // Overall
+  const totalDone=tasks.filter(t=>t.status==="done").length;
+  const totalApp=tasks.filter(t=>t.status!=="not applicable").length;
+  const totalPct=totalApp?Math.round((totalDone/totalApp)*100):0;
+  const totalBlocked=tasks.filter(t=>t.status==="blocked").length;
+  bodyHtml+=`<div style="background:var(--bg2);border-radius:var(--radius-lg);padding:14px 16px;margin-top:8px;margin-bottom:24px">
+    <div style="font-size:14px;font-weight:500;margin-bottom:8px">Overall: ${totalPct}% complete</div>
+    <div class="summary-stats" style="font-size:13px">
+      <span><b style="color:var(--green-text)">${totalDone}</b> done</span>
+      <span><b>${tasks.filter(t=>t.status==="in progress").length}</b> in progress</span>
+      ${totalBlocked?`<span><b style="color:var(--red-text)">${totalBlocked}</b> blocked</span>`:""}
+      <span><b>${tasks.filter(t=>t.status==="not started").length}</b> not started</span>
+      <span><b>${totalApp}</b> total applicable</span>
+    </div>
+  </div>`;
+
+  // Progress by team member
+  bodyHtml+="<h3 style='font-size:15px;font-weight:500;margin-bottom:12px'>Progress by team member</h3>";
+  const memberMap={};
+  tasks.filter(t=>!t.archived&&t.assignee&&t.status!=="not applicable").forEach(t=>{
+    const name=(t.assignee||"").trim();
+    if(!name) return;
+    if(!memberMap[name]) memberMap[name]={done:0,inprog:0,blocked:0,notstarted:0,total:0};
+    memberMap[name].total++;
+    if(t.status==="done") memberMap[name].done++;
+    else if(t.status==="in progress") memberMap[name].inprog++;
+    else if(t.status==="blocked") memberMap[name].blocked++;
+    else memberMap[name].notstarted++;
+  });
+  Object.entries(memberMap).sort((a,b)=>(b[1].done/b[1].total)-(a[1].done/a[1].total)).forEach(([name,s])=>{
+    const pct=Math.round((s.done/s.total)*100);
+    bodyHtml+=`<div class="summary-member">
+      <div>
+        <div class="summary-member-name">${name}</div>
+        <div style="height:4px;width:120px;background:var(--bg3);border-radius:2px;margin-top:4px;overflow:hidden">
+          <div style="height:100%;width:${pct}%;background:#1D9E75;border-radius:2px"></div>
+        </div>
+      </div>
+      <div class="summary-member-stats">
+        <span><b style="color:var(--green-text)">${s.done}</b> done</span>
+        <span><b>${s.inprog}</b> in prog</span>
+        ${s.blocked?`<span><b style="color:var(--red-text)">${s.blocked}</b> blocked</span>`:""}
+        <span style="font-weight:500">${pct}%</span>
+      </div>
+    </div>`;
+  });
+
+  body.innerHTML = bodyHtml;
+  document.getElementById("summary-modal").classList.add("open");
+}
+window.openSummary = openSummary;
+
+function closeSummary(){
+  document.getElementById("summary-modal").classList.remove("open");
+}
+window.closeSummary = closeSummary;
+
+function downloadSummary(){
+  const title = document.getElementById("summary-title").textContent;
+  const body = document.getElementById("summary-body").innerText;
+  const subtitle = document.getElementById("summary-subtitle").textContent;
+  const content = title + "\n" + subtitle + "\n\n" + body;
+  const blob = new Blob([content], {type:"text/plain"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = title.replace(/\s+/g,"-").toLowerCase() + ".txt";
+  a.click();
+}
+window.downloadSummary = downloadSummary;
+
+
+/* ── monthly snapshot / archive ── */
+async function saveMonthlySnapshot(){
+  const snap = {
+    month: monthLabel,
+    generated: new Date().toISOString(),
+    tasks: tasks.map(t=>({...t}))
+  };
+  const json = JSON.stringify(snap, null, 2);
+  const blob = new Blob([json], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = monthLabel.replace(/\s+/g,"-").toLowerCase() + "-close-snapshot.json";
+  a.click();
+  showToast("Snapshot downloaded — save this before rolling over");
+}
+window.saveMonthlySnapshot = saveMonthlySnapshot;
+
+/* ── blocker escalation banner ── */
+function renderBlockerBanner(){
+  const banner=document.getElementById("blocker-banner");
+  if(!banner) return;
+  const now=new Date();
+  const escalated=tasks.filter(t=>{
+    if(t.status!=="blocked") return false;
+    if(!t.blocked_since) return false;
+    const diff=(now-new Date(t.blocked_since))/(1000*60*60*24);
+    return diff>=2;
+  });
+  if(!escalated.length){banner.innerHTML="";return;}
+  banner.innerHTML=`<div class="blocked-escalation">
+    <i class="ti ti-alert-triangle" style="font-size:18px"></i>
+    <span><strong>${escalated.length} task${escalated.length>1?"s":""}</strong> blocked for 2+ days — filter by "Blocked" to review</span>
+  </div>`;
+}
+
+/* ── calendar view ── */
+function renderCalendar(){
+  const wrap=document.getElementById("table-inner");
+  const statusColor={'done':'s-done','in progress':'s-in-progress','blocked':'s-blocked','not applicable':'s-not-applicable','not started':'s-not-started'};
+  const lMap={"not started":"Not started","in progress":"In progress","blocked":"Blocked","not applicable":"N/A","done":"Done"};
+
+  // Group tasks by workday
+  const byDay={};
+  tasks.forEach(t=>{
+    if(t.archived) return;
+    const wd=t.workday||0;
+    if(!byDay[wd]) byDay[wd]=[];
+    byDay[wd].push(t);
+  });
+
+  const days=Object.keys(byDay).map(Number).sort((a,b)=>a-b);
+  if(!days.length){wrap.innerHTML=`<div class="empty"><i class="ti ti-calendar"></i>No tasks to display</div>`;return;}
+
+  // Group days into weeks
+  const weeks={};
+  days.forEach(wd=>{
+    const weekKey=Math.floor(wd/5);
+    if(!weeks[weekKey]) weeks[weekKey]=[];
+    weeks[weekKey].push(wd);
+  });
+
+  let html2=`<div class="cal-wrap">`;
+  Object.keys(weeks).sort((a,b)=>a-b).forEach(wk=>{
+    const wkDays=weeks[wk];
+    const firstDay=dueDate(wkDays[0]);
+    const lastDay=dueDate(wkDays[wkDays.length-1]);
+    const rangeLabel=firstDay&&lastDay?`${firstDay.toLocaleDateString("en-US",{month:"short",day:"numeric"})} – ${lastDay.toLocaleDateString("en-US",{month:"short",day:"numeric"})}`:"";
+    const wkNum=parseInt(wk);
+    const wkLabel=wkNum<0?"Pre-close prep":wkNum===0?"Close date":wkNum===1?"Week 1 post-close":`Week ${wkNum} post-close`;
+
+    html2+=`<div class="cal-week">
+      <div class="cal-week-header">${wkLabel} <span class="wd-range">${rangeLabel}</span></div>`;
+
+    wkDays.forEach(wd=>{
+      const dayTasks=byDay[wd]||[];
+      const due=dueDate(wd);
+      const dueFmt=due?due.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"}):"";
+      if(!dayTasks.length) return;
+      html2+=`<div style="margin-bottom:10px">
+        <div style="font-size:11px;color:var(--text2);margin-bottom:5px;font-weight:500">
+          ${wd>0?"+"+wd:wd} &nbsp;·&nbsp; ${dueFmt}
+          &nbsp;<span style="font-size:10px">(${dayTasks.filter(t=>t.status==="done").length}/${dayTasks.length} done)</span>
+        </div>
+        <div class="cal-cards">`;
+      dayTasks.forEach(t=>{
+        const sc=statusColor[t.status]||"s-not-started";
+        html2+=`<div class="cal-card ${sc}">
+          <div class="cal-card-top">
+            <span class="badge ${sc}" style="font-size:10px;padding:2px 7px">${lMap[t.status]||t.status}</span>
+            <span style="font-size:10px;color:var(--text2)">${t.sheet}</span>
+          </div>
+          <div class="cal-card-task">${t.task}</div>
+          <div class="cal-card-meta">${t.site||""} ${t.assignee?"· "+t.assignee:""}</div>
+          ${t.status==="blocked"&&t.blocker_notes?`<div style="font-size:11px;color:var(--red-text);margin-top:4px"><i class="ti ti-alert-triangle"></i> ${t.blocker_notes}</div>`:""}
+        </div>`;
+      });
+      html2+=`</div></div>`;
+    });
+    html2+=`</div>`;
+  });
+  html2+=`</div>`;
+  wrap.innerHTML=html2;
+}
+
+
+/* ── offline detection ── */
+function updateOnlineStatus(){
+  const banner = document.getElementById("offline-banner");
+  if(banner) banner.classList.toggle("show", !navigator.onLine);
+}
+window.addEventListener("online", updateOnlineStatus);
+window.addEventListener("offline", updateOnlineStatus);
+
 /* ── admin PIN gate ── */
 const ADMIN_PIN = "2604"; // change this to whatever PIN you want
 let pendingAdminAction = null;
@@ -603,6 +1144,7 @@ async function completeTask(id){
   if(error){showToast("Error: "+error.message);return;}
   const t=tasks.find(t=>t.id===id);
   if(t) Object.assign(t,{status:"done",completed_by:currentUser,completed_at:now});
+  await logHistory(id,"status",t?t.status:"","done");
   renderAll();
   showToast("Marked complete by "+currentUser);
 }
@@ -616,6 +1158,7 @@ async function reopenTask(id){
   const {error}=await db.from("tasks").update({status:"in progress",reopened_at:now,reopen_count:newCount,completed_by:null,completed_at:null}).eq("id",id);
   if(error){showToast("Error: "+error.message);return;}
   if(t) Object.assign(t,{status:"in progress",reopened_at:now,reopen_count:newCount,completed_by:null,completed_at:null});
+  await logHistory(id,"status","done","in progress");
   renderAll();
   showToast("Task reopened");
 }
@@ -710,21 +1253,30 @@ window.deleteTask=deleteTask;
 
 /* ── reset ── */
 async function confirmReset(){
-  if(!confirm("Delete ALL tasks and reload the default data? This cannot be undone.")) return;
-  await db.from("tasks").delete().neq("id",0);
-  await db.from("tasks").insert(SEED);
-  tasks=JSON.parse(JSON.stringify(SEED));
-  nextId=600;
+  if(!confirm("Reload all tasks from the database? This will discard any unsaved local changes.")) return;
+  const {data,error}=await db.from("tasks").select("*").order("id").limit(2000);
+  if(error){showToast("Error: "+error.message);return;}
+  tasks=data.map(t=>({...t,sheet:(t.sheet||"").trim(),assignee:(t.assignee||"").trim(),site:(t.site||"").trim()}));
+  nextId=Math.max(...tasks.map(t=>t.id),999)+1;
   renderAll();
-  showToast("Reset to defaults");
+  showToast("Reloaded from database");
 }
 window.confirmReset=confirmReset;
 
 /* ── rollover ── */
 function openRollover(){
-  const d=new Date();
-  d.setMonth(d.getMonth()+1);
-  document.getElementById("rollover-month").value=d.toLocaleString("default",{month:"long"})+" "+d.getFullYear();
+  // Auto-advance: next month label and last business day of next month as close date
+  const today=new Date();
+  const nextMonth=new Date(today.getFullYear(), today.getMonth()+1, 1);
+  const monthLabel=nextMonth.toLocaleString("default",{month:"long"})+" "+nextMonth.getFullYear();
+  document.getElementById("rollover-month").value=monthLabel;
+  // Find last business day of next month
+  const lastDay=new Date(nextMonth.getFullYear(), nextMonth.getMonth()+1, 0);
+  while(lastDay.getDay()===0||lastDay.getDay()===6) lastDay.setDate(lastDay.getDate()-1);
+  const yyyy=lastDay.getFullYear();
+  const mm=String(lastDay.getMonth()+1).padStart(2,"0");
+  const dd=String(lastDay.getDate()).padStart(2,"0");
+  document.getElementById("rollover-closedate").value=`${yyyy}-${mm}-${dd}`;
   document.getElementById("rollover-modal").classList.add("open");
 }
 window.openRollover=openRollover;
@@ -769,6 +1321,7 @@ function getFiltered(){
     if(si&&t.site!==si) return false;
     if(a&&(t.assignee||"").trim()!==a.trim()) return false;
     if(q&&!t.task.toLowerCase().includes(q)&&!(t.site||"").toLowerCase().includes(q)) return false;
+    if(!showArchived&&t.archived) return false;
     return true;
   });
 }
@@ -841,6 +1394,8 @@ function populateFilters(){
 }
 
 function renderTable(){
+  if(activeSheet==="📅 Calendar"){renderCalendar();return;}
+  if(activeSheet==="👤 My Tasks"){renderMyTasks();return;}
   const filtered=getFiltered();
   const showSheet=activeSheet==="All";
   if(!filtered.length){
@@ -850,23 +1405,26 @@ function renderTable(){
   document.getElementById("table-inner").innerHTML=`
   <table>
     <thead><tr>
-      ${showSheet?`<th style="width:12%">Workstream</th>`:""}
-      <th style="width:9%">Site</th>
-      <th>Task</th>
-      <th style="width:7%">Owner</th>
-      <th style="width:7%">Assignee</th>
-      <th style="width:7%;text-align:center">Day</th>
-      <th style="width:7%;text-align:center">Due</th>
-      <th style="width:16%">Update status</th>
-      <th style="width:13%">Completed</th>
-      <th style="width:32px"></th>
+      <th class="cb-row"><input type="checkbox" id="select-all" onclick="toggleSelectAll(this)" title="Select all"></th>
+      ${showSheet?`<th style="width:120px;min-width:120px">Workstream</th>`:""}
+      <th style="width:90px;min-width:90px">Site</th>
+      <th style="min-width:200px">Task</th>
+      <th style="width:90px;min-width:90px">Assignee</th>
+      <th style="width:50px;min-width:50px;text-align:center">Day</th>
+      <th style="width:70px;min-width:70px;text-align:center">Due</th>
+      <th style="width:140px;min-width:140px">Update status</th>
+      <th style="width:150px;min-width:150px">Completed</th>
+      <th style="width:180px;min-width:180px">Notes</th>
+      <th style="width:180px;min-width:180px">Blocker notes</th>
+      <th style="width:36px;min-width:36px"></th>
+      <th style="width:36px;min-width:36px"></th>
     </tr></thead>
     <tbody>
     ${filtered.map(t=>`<tr>
+      <td class="cb-row"><input type="checkbox" class="task-cb" data-id="${t.id}" onchange="onCheckboxChange()"></td>
       ${showSheet?`<td style="font-size:12px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${t.sheet}">${t.sheet}</td>`:""}
       <td><span class="site-tag" title="${t.site||""}">${t.site||""}</span></td>
       <td class="task-cell">${t.task}${t.notes?`<br><span style="font-size:11px;color:var(--text2)">${t.notes}</span>`:""}${t.file_link?`<a href="${t.file_link}" class="file-link" target="_blank" title="Open file"><i class="ti ti-external-link"></i></a>`:""}</td>
-      <td style="font-size:12px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.owner||""}</td>
       <td style="font-size:12px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
         <span id="asgn-${t.id}" onclick="editAssignee(${t.id})" title="Click to edit assignee" style="cursor:pointer;border-bottom:1px dashed var(--border2)">${t.assignee||"—"}</span>
       </td>
@@ -878,13 +1436,34 @@ function renderTable(){
       </td>
       <td>${statusCell(t)}</td>
       <td style="white-space:normal">${completedCell(t)}</td>
+      <td class="notes-cell">
+        <textarea class="notes-input" rows="1" placeholder="Add note..." onblur="saveNotes(${t.id}, this.value)" onfocus="this.rows=3" onblur="this.rows=1;saveNotes(${t.id},this.value)">${t.general_notes||''}</textarea>
+      </td>
+      <td class="notes-cell">
+        <textarea class="notes-input blocker-input" rows="1" placeholder="${t.status==='blocked'?'What is blocking this?':'—'}" ${t.status!=='blocked'?'disabled':''} onblur="saveBlockerNotes(${t.id}, this.value)" onfocus="this.rows=3">${t.blocker_notes||''}</textarea>
+        ${expandedHistory[t.id]?`<div class="history-panel">${renderHistory(t.id)}</div>`:''}
+        <button class="history-btn" onclick="toggleHistory(${t.id})"><i class="ti ti-history"></i> ${expandedHistory[t.id]?'Hide':'Log'}</button>
+      </td>
+      <td>
+        <button class="archive-btn ${t.archived?'archived':''}" onclick="toggleArchive(${t.id})" title="${t.archived?'Unarchive':'Archive'} task">
+          <i class="ti ti-archive"></i>
+        </button>
+      </td>
       <td><button class="action-btn del" onclick="deleteTask(${t.id})" title="Delete" aria-label="Delete task"><i class="ti ti-trash"></i></button></td>
     </tr>`).join("")}
     </tbody>
   </table>`;
 }
 
-function renderAll(){renderMetrics();renderTabs();populateFilters();renderTable();}
+function renderAll(){
+  if(activeSheet==="📅 Calendar"){
+    renderMetrics();renderTabs();renderBlockerBanner();renderCalendar();
+  } else if(activeSheet==="👤 My Tasks"){
+    renderMetrics();renderTabs();renderBlockerBanner();renderMyTasks();
+  } else {
+    renderMetrics();renderTabs();populateFilters();renderBlockerBanner();renderTable();
+  }
+}
 
 /* ── filter events ── */
 document.getElementById("f-status").addEventListener("change",renderTable);
@@ -901,6 +1480,7 @@ function showToast(msg){
 }
 
 boot();
+updateOnlineStatus();
 </script>
 </body>
 </html>
